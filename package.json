@@ -1,0 +1,38 @@
+{
+  "name": "ridimilli-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "dependencies": {
+    "@types/express": "^4.17.11",
+    "@types/lodash": "^4.14.168",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^14.14.22",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
+    "eslint": "^7.18.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "nodemon --exec ts-node src/www.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ridimilli/ridimilli-backend.git"
+  },
+  "author": "ridimillii",
+  "license": "ridimilli",
+  "bugs": {
+    "url": "https://github.com/ridimilli/ridimilli-backend/issues"
+  },
+  "homepage": "https://github.com/ridimilli/ridimilli-backend#readme"
+}
