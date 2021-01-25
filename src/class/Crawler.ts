@@ -14,15 +14,7 @@ export class Crawler {
         return this.instance;
     }
 
-    /**
-     * @param platform Platform type
-     */
-    public crawlByPlatfrom(platform: Platform_T): Promise<{}> {
-        return new Promise((resolve, reject) => {
-            // TODO
-        });
-    }
-    public crawlByUrl(url: String): Promise<{ data: String }> {
+    public crawling(url: String): Promise<{ data: String }> {
         return new Promise((resolve, reject) => {
             // TODO
         });

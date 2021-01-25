@@ -8,6 +8,17 @@ type Platform_T =
     | '인터파크 도서'
     | '네이버 시리즈';
 
+type NaverBook_T = {
+    title: string;
+    link: string;
+    image: string;
+    author: string;
+    isbn: string;
+    description: string;
+    publisher: string;
+    pubdate: Date;
+};
+
 enum Platforms {
     RIDI = '리디북스',
     MILLI = '밀리의서재',
@@ -21,7 +32,7 @@ enum Platforms {
 /**
  * export Type
  */
-export { ServiceType_T, Platform_T };
+export { ServiceType_T, Platform_T, NaverBook_T };
 
 /**
  * export Enum
