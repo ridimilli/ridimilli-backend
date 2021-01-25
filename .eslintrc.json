@@ -23,6 +23,8 @@
             "error", {
                 "extendDefaults": false
             }
-        ]
+        ],
+        "no-empty-function": ["error", { "allow": ["constructors"] }],
+        "@typescript-eslint/no-empty-function": ["error", { "allow": ["constructors"] }]
     }
 }
