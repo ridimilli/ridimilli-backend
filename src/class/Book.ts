@@ -1,12 +1,12 @@
 export default class Book {
-    private _bid: String;
-    private _title: String;
-    private _author: String;
-    private _publisher: String;
-    private _description: String;
-    private _image: String;
-    private _isbn: Number;
-    private _pubdate: Date;
+    private bid: String;
+    private title: String;
+    private author: String;
+    private publisher: String;
+    private description: String;
+    private image: String;
+    private isbn: Number;
+    private pubdate: Date;
 
     constructor(
         bid: String,
@@ -14,25 +14,17 @@ export default class Book {
         author: String,
         publihser: String,
         description: String,
-        image: String,
         isbn: Number,
+        image: String,
         pubdate: Date
     ) {
-        this._bid = bid;
-        this._title = title;
-        this._author = author;
-        this._publisher = publihser;
-        this._description = description;
-        this._image = image;
-        this._isbn = isbn;
-        this._pubdate = pubdate;
-    }
-
-    get bid(): String {
-        return this._bid;
-    }
-
-    get isbn(): Number {
-        return this._isbn;
+        this.bid = bid;
+        this.title = title;
+        this.author = author;
+        this.publisher = publihser;
+        this.description = description;
+        this.isbn = isbn;
+        this.image = image;
+        this.pubdate = pubdate;
     }
 }
