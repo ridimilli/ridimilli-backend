@@ -2,16 +2,18 @@ import naverBookAPI from '../modules/naverBookApi';
 import scrapper from '../modules/scrapper';
 import ut from '../modules/util';
 import rm from '../modules/responseMessage';
+import { Request, Response } from 'express';
+// import crawler from '../class/Crawler';
 
-const naverAPI = async (req, res): Promise<void> => {
-    console.log('111');
-    const start = req.query.start || 1;
-
+const naverAPI = async (req: Request, res: Response): Promise<Response> => {
+    const { query, start }: { query?: string; start?: number } = req.query;
     try {
-        if (!req.query.query) {
-            return res.status(400).json(ut.fail(rm.NULL_VALUE));
-        }
-        const apiBooks = await naverBookAPI.callBookApi(req.query.query, start);
+        if (!query) return res.status(400).json(ut.fail(rm.NULL_VALUE));
+
+        const apiBooks = await naverBookAPI.callBookApi(
+            query,
+            start ? start : 1
+        );
         const books = apiBooks.map((book) => {
             const bookTitle = JSON.stringify(book.title)
                 .replace(/(<b>)|(<\/b>)/gi, '')
@@ -42,8 +44,8 @@ const naverAPI = async (req, res): Promise<void> => {
  * @body = title, link
  * @return  json array
  */
-const crawling = async (req, res): Promise<void> => {
-    const { title, bid } = req.query;
+const crawling = async (req: Request, res: Response): Promise<Response> => {
+    const { title, bid }: { title?: string; bid?: string } = req.query;
 
     if (!title || !bid) {
         return res.status(400).json(ut.fail(rm.NULL_VALUE));
@@ -53,10 +55,11 @@ const crawling = async (req, res): Promise<void> => {
         const purchaseBooks = await scrapper.searchNaverBook(bid);
         const dto = await Promise.all([
             scrapper.ridiSelect(title),
-            scrapper.millie(title),
-            scrapper.yes24(title),
-            scrapper.kyoboBook(title),
+            // scrapper.millie(title),
+            // scrapper.yes24(title),
+            // scrapper.kyoboBook(title),
         ]);
+        // const dto = await crawler.crawling(title);
         const subscribedBooks = dto.filter((item) => item !== undefined);
         res.status(200).json(
             ut.success(rm.GET_CRAWLING_BOOKS_SUCCESS, {

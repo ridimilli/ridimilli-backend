@@ -1,44 +1,45 @@
-import * as _ from 'lodash';
-import { Platform_T, Platforms } from '../types';
+// import * as _ from 'lodash';
+// import { Platform_T, Platforms } from '../types';
+// import {
+//     ridiSelect,
+//     millie,
+//     yes24,
+//     kyoboBook,
+//     searchNaverBook,
+// } from '../modules/scrapper';
+// /**
+//  * Singleton Class
+//  */
+// class Crawler {
+//     private static instance: Crawler;
 
-/**
- * Singleton Class
- */
-export class Crawler {
-    private static instance: Crawler;
+//     private constructor() {}
 
-    private constructor() {}
+//     public static getInstance(): Crawler {
+//         if (_.isNil(this.instance)) this.instance = new Crawler();
+//         return this.instance;
+//     }
 
-    public static getInstance(): Crawler {
-        if (_.isNil(this.instance)) this.instance = new Crawler();
-        return this.instance;
-    }
+//     public async crawling(
+//         title: String
+//     ): Promise<
+//         Array<{
+//             titleName: string;
+//             platform: string;
+//             redirectURL: string;
+//             price: number;
+//         }>
+//     > {
+//         console.log('test1');
+//         // await puppeteer.launch();
+//         // console.log('test2');
+//         return await Promise.all([
+//             ridiSelect(title),
+//             millie(title),
+//             yes24(title),
+//             kyoboBook(title),
+//         ]);
+//     }
+// }
 
-    public crawling(url: String): Promise<{ data: String }> {
-        return new Promise((resolve, reject) => {
-            // TODO
-        });
-    }
-
-    public generateLink(platform: Platform_T, bookName: String): String {
-        // TODO
-        const url = 'https://';
-        switch (platform) {
-            case Platforms.ALADIN:
-                break;
-            case Platforms.INTERPARK:
-                break;
-            case Platforms.KYOBO:
-                break;
-            case Platforms.MILLI:
-                break;
-            case Platforms.NAVER:
-                break;
-            case Platforms.RIDI:
-                break;
-            case Platforms.YES24:
-                break;
-        }
-        return url;
-    }
-}
+// export default Crawler.getInstance();

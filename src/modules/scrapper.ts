@@ -11,7 +11,9 @@ const pupRequest = async (
     subscribedPrice
 ) => {
     const [TITLE, REDIRECT_URL, LOAD_SELECTOR] = [0, 1, 2];
+    console.log('test4');
     const browse = await puppeteer.launch();
+    console.log('test5');
     const page = await browse.newPage();
     await page.goto(url);
     await page.waitForSelector(childSelectorArr[LOAD_SELECTOR]);
@@ -54,6 +56,7 @@ const ridiSelect = async (title) => {
         title,
         subscribedPrice
     );
+    console.log('test done');
     return book;
 };
 
@@ -198,3 +201,4 @@ const searchNaverBook = (bid) =>
     });
 
 export default { ridiSelect, millie, yes24, kyoboBook, searchNaverBook };
+export { ridiSelect, millie, yes24, kyoboBook, searchNaverBook };
