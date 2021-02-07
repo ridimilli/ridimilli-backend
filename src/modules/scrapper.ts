@@ -2,21 +2,18 @@ import * as request from 'request';
 import * as cheerio from 'cheerio';
 import * as puppeteer from 'puppeteer';
 
-type pupResponse_T = {
-    title: string;
-    platform: string;
-    redirectURL: string;
-    price: number;
-};
+import { Platforms, ServiceType, SubscribePrice, Platform_T } from '../types';
+import BookPrice from '../class/BookPrice';
 
 const pupRequest = async (
     url,
     selector,
     childSelectorArr,
-    platform,
+    platform: Platform_T,
     title,
-    subscribedPrice
-): Promise<pupResponse_T> => {
+    subscribedPrice,
+    host?: string
+): Promise<BookPrice> => {
     const [TITLE, REDIRECT_URL, LOAD_SELECTOR] = [0, 1, 2];
     const browse = await puppeteer.launch();
     const page = await browse.newPage();
@@ -27,15 +24,19 @@ const pupRequest = async (
     const lists = [];
     $(selector).each((_, list) => {
         const title = $(list).find(childSelectorArr[TITLE]).text();
-        const redirectURL = $(list)
+        let redirectURL = $(list)
             .find(childSelectorArr[REDIRECT_URL])
             .attr('href');
-        lists.push({
-            title,
-            platform,
-            redirectURL,
-            price: subscribedPrice,
-        });
+        if (host) redirectURL = encodeURI(host + redirectURL);
+        lists.push(
+            new BookPrice(
+                title,
+                platform,
+                redirectURL,
+                ServiceType.SUBSCRIBE,
+                subscribedPrice
+            )
+        );
     });
     browse.close();
     if (lists.length) {
@@ -44,29 +45,28 @@ const pupRequest = async (
     return;
 };
 
-const ridiSelect = async (title: string): Promise<pupResponse_T> => {
+const ridiSelect = async (title: string): Promise<BookPrice> => {
     const platform = 'RIDI';
-    const subscribedPrice = 9900;
     const url =
         'https://select.ridibooks.com/search?q=' +
         encodeURI(title) +
         '&type=Books';
     const selector = '#app > main > ul> li';
     const childSelectorArr = ['div > div > a > h3 ', 'div > div > a', 'a h3'];
-    const book = await pupRequest(
+    const book: BookPrice = await pupRequest(
         url,
         selector,
         childSelectorArr,
-        platform,
+        Platforms[platform],
         title,
-        subscribedPrice
+        SubscribePrice.RIDI,
+        'https://select.ridibooks.com'
     );
     return book;
 };
 
-const millie = async (title: string): Promise<pupResponse_T> => {
+const millie = async (title: string): Promise<BookPrice> => {
     const platform = 'MILLIE';
-    const subscribedPrice = 15000;
     const url =
         'https://www.millie.co.kr/v3/search/result/' +
         encodeURI(title) +
@@ -82,17 +82,15 @@ const millie = async (title: string): Promise<pupResponse_T> => {
         url,
         selector,
         childSelectorArr,
-        platform,
+        Platforms[platform],
         title,
-        subscribedPrice
+        SubscribePrice.MILLIE
     );
     return book;
 };
 
-const yes24 = (title: string): Promise<pupResponse_T> =>
+const yes24 = (title: string): Promise<BookPrice> =>
     new Promise((resolved, rejected) => {
-        const platform = 'YES24';
-        const subscribedPrice = 12000;
         const url =
             'https://bookclub.yes24.com/BookClub/Search?keyword=' +
             encodeURI(title) +
@@ -115,27 +113,28 @@ const yes24 = (title: string): Promise<pupResponse_T> =>
                 'div > div > div > a',
                 'div > p > span > a',
             ];
-            let books = {};
 
             $(selector).each((_, list) => {
                 const title = $(list).find(childSelectorArr[0]).text();
                 const redirectURL = $(list)
                     .find(childSelectorArr[1])
                     .attr('href');
-                books = {
-                    title,
-                    platform,
-                    redirectURL: 'http://bookclub.yes24.com' + redirectURL,
-                    price: subscribedPrice,
-                };
+                resolved(
+                    new BookPrice(
+                        title,
+                        Platforms.YES24,
+                        'http://bookclub.yes24.com' + redirectURL,
+                        ServiceType.SUBSCRIBE,
+                        SubscribePrice.YES24
+                    )
+                );
             });
-            resolved(books as pupResponse_T);
+            resolved(null);
         });
     });
 
-const kyoboBook = async (title: string): Promise<pupResponse_T> => {
+const kyoboBook = async (title: string): Promise<BookPrice> => {
     const platform = 'KYOBO';
-    const subscribedPrice = 11000;
     const url =
         'https://search.kyobobook.co.kr/web/search?vPstrKeyWord=' +
         encodeURI(title) +
@@ -146,18 +145,19 @@ const kyoboBook = async (title: string): Promise<pupResponse_T> => {
         'td.detail > div.title > a',
         'td.detail div.title a strong',
     ];
+    // TODO
+    // alt 확인 후 KYOBO_BASIC & KYOBU_UNLIMITED 분기 처리 (Platform, subscribePrice)
     const book = await pupRequest(
         url,
         selector,
         childSelectorArr,
-        platform,
+        Platforms[platform],
         title,
-        subscribedPrice
+        SubscribePrice.KYOBO_BASIC
     );
     return book;
 };
 
-//@todo Map 한글플랫폼 -> 영어 플랫폼으로 바꿔주기
 const searchNaverBook = (
     bid: string
 ): Promise<
@@ -168,14 +168,14 @@ const searchNaverBook = (
     }>
 > =>
     new Promise((resolved, rejected) => {
-        const platformIdMap = new Map([
-            ['리디북스', 'RIDI'],
-            ['밀리의서재', 'MILLIE'],
-            ['예스24', 'YES24'],
-            ['인터넷 교보문고', 'KYOBO'],
-            ['알라딘', 'ALADIN'],
-            ['인터파크 도서', 'INTERPARK'],
-            ['네이버 시리즈', 'NAVER'],
+        const platformIdMap: Map<Platform_T, string> = new Map([
+            [Platforms.RIDI, 'RIDI'],
+            [Platforms.MILLIE, 'MILLIE'],
+            [Platforms.YES24, 'YES24'],
+            [Platforms.KYOBO, 'KYOBO'],
+            [Platforms.ALADIN, 'ALADIN'],
+            [Platforms.INTERPARK, 'INTERPARK'],
+            [Platforms.NAVER, 'NAVER'],
         ]);
 
         const url = 'https://book.naver.com/bookdb/book_detail.nhn?bid=' + bid;
@@ -200,7 +200,9 @@ const searchNaverBook = (
                 const price = $(book).find('span > em').text();
                 const redirectURL = $(book).find('div > a').attr('href');
                 if (isEbook.match('ebook')) {
-                    const platformName = platform.split('Naver')[0];
+                    const platformName = platform.split(
+                        'Naver'
+                    )[0] as Platform_T;
                     books.push({
                         platform: platformIdMap.get(platformName),
                         price: Number(price.split('원')[0]),
