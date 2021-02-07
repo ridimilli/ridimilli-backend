@@ -5,7 +5,7 @@ dotenv.config();
 
 const callBookApi = (
     query: string,
-    start: string
+    start: number
 ): Promise<Array<NaverBook_T>> => {
     return new Promise((resolved, rejected) => {
         const api_url =
