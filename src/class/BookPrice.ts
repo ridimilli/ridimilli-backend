@@ -7,11 +7,11 @@ import {
 } from '../types';
 import { Platforms } from '../types';
 export default class BookPrice {
-    private _title: string;
-    private _pid: Platforms;
-    private _price: Number;
-    private _redirectURL: String;
-    private _serviceType: ServiceType_T;
+    private title: string;
+    private pid: Platforms;
+    private price: Number;
+    private redirectURL: String;
+    private serviceType: ServiceType_T;
 
     constructor(
         title: string,
@@ -20,23 +20,11 @@ export default class BookPrice {
         serviceType: ServiceType_T,
         price: Number
     ) {
-        this._title = title;
+        this.title = title;
 
-        this._pid = platform;
-        this._redirectURL = redirectURL;
-        this._serviceType = serviceType;
-        this._price = price;
-    }
-
-    get pid(): Platforms {
-        return this._pid;
-    }
-
-    get price(): Number {
-        return this._price;
-    }
-
-    get serviceType(): ServiceType_T {
-        return this._serviceType;
+        this.pid = platform;
+        this.redirectURL = redirectURL;
+        this.serviceType = serviceType;
+        this.price = price;
     }
 }
