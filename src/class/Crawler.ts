@@ -1,10 +1,9 @@
 import * as _ from 'lodash';
-import { Platform_T, Platforms } from '../types';
-
+import { ridiSelect, millie, yes24, kyoboBook } from '../modules/scrapper';
 /**
  * Singleton Class
  */
-export class Crawler {
+class Crawler {
     private static instance: Crawler;
 
     private constructor() {}
@@ -14,31 +13,14 @@ export class Crawler {
         return this.instance;
     }
 
-    public crawling(url: String): Promise<{ data: String }> {
-        return new Promise((resolve, reject) => {
-            // TODO
-        });
-    }
-
-    public generateLink(platform: Platform_T, bookName: String): String {
-        // TODO
-        const url = 'https://';
-        switch (platform) {
-            case Platforms.ALADIN:
-                break;
-            case Platforms.INTERPARK:
-                break;
-            case Platforms.KYOBO:
-                break;
-            case Platforms.MILLI:
-                break;
-            case Platforms.NAVER:
-                break;
-            case Platforms.RIDI:
-                break;
-            case Platforms.YES24:
-                break;
-        }
-        return url;
+    public async crawling(title: string) {
+        return await Promise.all([
+            ridiSelect(title),
+            millie(title),
+            yes24(title),
+            kyoboBook(title),
+        ]);
     }
 }
+
+export default Crawler.getInstance();

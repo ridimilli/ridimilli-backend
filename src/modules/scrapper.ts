@@ -2,6 +2,13 @@ import * as request from 'request';
 import * as cheerio from 'cheerio';
 import * as puppeteer from 'puppeteer';
 
+type pupResponse_T = {
+    title: string;
+    platform: string;
+    redirectURL: string;
+    price: number;
+};
+
 const pupRequest = async (
     url,
     selector,
@@ -9,7 +16,7 @@ const pupRequest = async (
     platform,
     title,
     subscribedPrice
-) => {
+): Promise<pupResponse_T> => {
     const [TITLE, REDIRECT_URL, LOAD_SELECTOR] = [0, 1, 2];
     const browse = await puppeteer.launch();
     const page = await browse.newPage();
@@ -19,12 +26,12 @@ const pupRequest = async (
     const $ = cheerio.load(content);
     const lists = [];
     $(selector).each((_, list) => {
-        const titleName = $(list).find(childSelectorArr[TITLE]).text();
+        const title = $(list).find(childSelectorArr[TITLE]).text();
         const redirectURL = $(list)
             .find(childSelectorArr[REDIRECT_URL])
             .attr('href');
         lists.push({
-            titleName,
+            title,
             platform,
             redirectURL,
             price: subscribedPrice,
@@ -32,12 +39,12 @@ const pupRequest = async (
     });
     browse.close();
     if (lists.length) {
-        return lists.filter((item) => title.match(item.titleName))[0];
+        return lists.filter((item) => title.match(item.title))[0];
     }
     return;
 };
 
-const ridiSelect = async (title) => {
+const ridiSelect = async (title: string): Promise<pupResponse_T> => {
     const platform = 'RIDI';
     const subscribedPrice = 9900;
     const url =
@@ -57,7 +64,7 @@ const ridiSelect = async (title) => {
     return book;
 };
 
-const millie = async (title) => {
+const millie = async (title: string): Promise<pupResponse_T> => {
     const platform = 'MILLIE';
     const subscribedPrice = 15000;
     const url =
@@ -82,7 +89,7 @@ const millie = async (title) => {
     return book;
 };
 
-const yes24 = (title) =>
+const yes24 = (title: string): Promise<pupResponse_T> =>
     new Promise((resolved, rejected) => {
         const platform = 'YES24';
         const subscribedPrice = 12000;
@@ -116,17 +123,17 @@ const yes24 = (title) =>
                     .find(childSelectorArr[1])
                     .attr('href');
                 books = {
-                    titleName: title,
+                    title,
                     platform,
                     redirectURL: 'http://bookclub.yes24.com' + redirectURL,
                     price: subscribedPrice,
                 };
             });
-            resolved(books);
+            resolved(books as pupResponse_T);
         });
     });
 
-const kyoboBook = async (title) => {
+const kyoboBook = async (title: string): Promise<pupResponse_T> => {
     const platform = 'KYOBO';
     const subscribedPrice = 11000;
     const url =
@@ -151,7 +158,15 @@ const kyoboBook = async (title) => {
 };
 
 //@todo Map 한글플랫폼 -> 영어 플랫폼으로 바꿔주기
-const searchNaverBook = (bid) =>
+const searchNaverBook = (
+    bid: string
+): Promise<
+    Array<{
+        platform: string;
+        price: number;
+        redirectURL: string;
+    }>
+> =>
     new Promise((resolved, rejected) => {
         const platformIdMap = new Map([
             ['리디북스', 'RIDI'],
@@ -198,3 +213,4 @@ const searchNaverBook = (bid) =>
     });
 
 export default { ridiSelect, millie, yes24, kyoboBook, searchNaverBook };
+export { ridiSelect, millie, yes24, kyoboBook, searchNaverBook };
