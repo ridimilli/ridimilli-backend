@@ -14,12 +14,18 @@ class Crawler {
     }
 
     public async crawling(title: string) {
-        return await Promise.all([
+        const [
+            ridiResult,
+            millieResult,
+            yes24Result,
+            kyoboBookResult,
+        ] = await Promise.all([
             ridiSelect(title),
             millie(title),
             yes24(title),
             kyoboBook(title),
         ]);
+        return [ridiResult, millieResult, yes24Result, ...kyoboBookResult];
     }
 }
 
