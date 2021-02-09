@@ -10,8 +10,8 @@ enum Platforms {
     MILLIE = '밀리의서재',
     YES24 = '예스24',
     KYOBO = '인터넷 교보문고',
-    KYOBO_BASIC = '인터넷 교보문고 BASIC',
-    KYOBO_UNLIMITED = '인터넷 교보문고 UNLIMITED',
+    KYOBO_BASIC = 'sam베이직',
+    KYOBO_UNLIMITED = 'sam무제한',
     ALADIN = '알라딘',
     INTERPARK = '인터파크 도서',
     NAVER = '네이버 시리즈',
@@ -33,6 +33,8 @@ type Platform_T =
     | Platforms.MILLIE
     | Platforms.INTERPARK
     | Platforms.KYOBO
+    | Platforms.KYOBO_BASIC
+    | Platforms.KYOBO_UNLIMITED
     | Platforms.NAVER
     | Platforms.RIDI
     | Platforms.YES24;
