@@ -18,14 +18,11 @@ enum Platforms {
 }
 
 enum SubscribePrice {
-    RIDI = 1000,
-    MILLIE = 2000,
-    YES24 = 3000,
-    KYOBO_BASIC = 4000,
-    KYOBO_UNLIMITED = 5000,
-    ALADIN = 6000,
-    INTERPARK = 7000,
-    NAVER = 8000,
+    RIDI = 9900,
+    MILLIE = 9900,
+    YES24 = 5500,
+    KYOBO_BASIC = 7000,
+    KYOBO_UNLIMITED = 9900,
 }
 
 type Platform_T =

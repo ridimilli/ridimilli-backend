@@ -3,6 +3,7 @@ import scrapper from '../modules/scrapper';
 import ut from '../modules/util';
 import rm from '../modules/responseMessage';
 import { Request, Response } from 'express';
+import * as _ from 'lodash';
 
 import crawler from '../class/Crawler';
 
@@ -10,7 +11,7 @@ const naverAPI = async (req: Request, res: Response): Promise<Response> => {
     const { start, query }: { start?: number; query?: string } = req.query;
 
     try {
-        if (!query) {
+        if (!query || query === 'undefined') {
             return res.status(400).json(ut.fail(rm.NULL_VALUE));
         }
         const apiBooks = await naverBookAPI.callBookApi(
@@ -50,7 +51,7 @@ const naverAPI = async (req: Request, res: Response): Promise<Response> => {
 const crawling = async (req: Request, res: Response): Promise<Response> => {
     const { title, bid }: { title?: string; bid?: string } = req.query;
 
-    if (!title || !bid) {
+    if (title == 'undefined' || !bid || !title) {
         return res.status(400).json(ut.fail(rm.NULL_VALUE));
     }
 
