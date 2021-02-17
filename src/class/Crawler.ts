@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { ridiSelect, millie, yes24, kyoboBook } from '../modules/scrapper';
+import BookPrice from './BookPrice';
 /**
  * Singleton Class
  */
@@ -14,18 +15,35 @@ class Crawler {
     }
 
     public async crawling(title: string) {
-        const [
-            ridiResult,
-            millieResult,
-            yes24Result,
-            kyoboBookResult,
-        ] = await Promise.all([
+        const lists = [];
+        const scrappers = [
             ridiSelect(title),
             millie(title),
             yes24(title),
             kyoboBook(title),
-        ]);
-        return [ridiResult, millieResult, yes24Result, ...kyoboBookResult];
+        ];
+        await Promise.allSettled(scrappers).then((results) => {
+            results.forEach((result) => {
+                if (result.status == 'fulfilled') {
+                    if (result.value instanceof BookPrice) {
+                        lists.push(result.value);
+                    }
+                }
+            });
+        });
+        return lists;
+        // const [
+        //     ridiResult,
+        //     millieResult,
+        //     yes24Result,
+        //     kyoboBookResult,
+        // ] = await Promise.all([
+        //     ridiSelect(title),
+        //     millie(title),
+        //     yes24(title),
+        //     kyoboBook(title),
+        // ]);
+        // return [ridiResult, millieResult, yes24Result, ...kyoboBookResult];
     }
 }
 
