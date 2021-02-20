@@ -10,5 +10,15 @@
         // For ESLint
         "source.fixAll.eslint": true
     },
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "cSpell.words": [
+        "ALADIN",
+        "INTERPARK",
+        "Pcondition",
+        "kyobo",
+        "networkidle",
+        "ridi",
+        "ridimilli",
+        "ridimillii"
+    ]
 }
