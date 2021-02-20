@@ -32,18 +32,6 @@ class Crawler {
             });
         });
         return lists;
-        // const [
-        //     ridiResult,
-        //     millieResult,
-        //     yes24Result,
-        //     kyoboBookResult,
-        // ] = await Promise.all([
-        //     ridiSelect(title),
-        //     millie(title),
-        //     yes24(title),
-        //     kyoboBook(title),
-        // ]);
-        // return [ridiResult, millieResult, yes24Result, ...kyoboBookResult];
     }
 }
 

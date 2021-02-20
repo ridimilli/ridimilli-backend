@@ -183,7 +183,9 @@ const kyoboPupRequest = async (
     const browse = await puppeteer.launch();
     const page = await browse.newPage();
     await page.goto(url); //여기서 모든 latency가 발견됨.
-    await page.waitForSelector(childSelectorArr[LOAD_SELECTOR]);
+    await page.waitForSelector(childSelectorArr[LOAD_SELECTOR], {
+        timeout: 2000,
+    });
     const content = await page.content();
     const $ = cheerio.load(content);
     const lists = [];
