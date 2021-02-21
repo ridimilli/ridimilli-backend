@@ -28,6 +28,10 @@ class Crawler {
                     if (result.value instanceof BookPrice) {
                         lists.push(result.value);
                     }
+
+                    if (result.value instanceof Array) {
+                        lists.push(...result.value);
+                    }
                 }
             });
         });
