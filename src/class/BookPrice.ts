@@ -8,7 +8,7 @@ import {
 import { Platforms } from '../types';
 export default class BookPrice {
     private title: string;
-    private pid: Platforms;
+    private platform: Platforms;
     private price: Number;
     private redirectURL: String;
     private serviceType: ServiceType_T;
@@ -22,7 +22,7 @@ export default class BookPrice {
     ) {
         this.title = title;
 
-        this.pid = platform;
+        this.platform = platform;
         this.redirectURL = redirectURL;
         this.serviceType = serviceType;
         this.price = price;
