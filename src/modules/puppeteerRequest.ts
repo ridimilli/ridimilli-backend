@@ -31,7 +31,6 @@ const pupRequest = async (
                 .find(childSelectorArr[REDIRECT_URL])
                 .attr('href');
             if (host) redirectURL = encodeURI(host + redirectURL);
-            console.log(title);
             lists.push(
                 new BookPrice(
                     title,
