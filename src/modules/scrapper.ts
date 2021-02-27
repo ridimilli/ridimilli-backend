@@ -138,6 +138,16 @@ const searchNaverBook = (
             [Platforms.NAVER, 'NAVER'],
         ]);
 
+        const reversedPlatformIdMap: Map<string, Platform_T> = new Map([
+            ['RIDI', Platforms.RIDI],
+            ['MILLIE', Platforms.MILLIE],
+            ['YES24', Platforms.YES24],
+            ['KYOBO', Platforms.KYOBO],
+            ['ALADIN', Platforms.ALADIN],
+            ['INTERPARK', Platforms.INTERPARK],
+            ['NAVER', Platforms.NAVER],
+        ]);
+
         const url = 'https://book.naver.com/bookdb/book_detail.nhn?bid=' + bid;
         const options = {
             url,
@@ -164,7 +174,9 @@ const searchNaverBook = (
                         'Naver'
                     )[0] as Platform_T;
                     books.push({
-                        platform: platformIdMap.get(platformName),
+                        platform: reversedPlatformIdMap.get(
+                            platformIdMap.get(platformName)
+                        ),
                         price: Number(price.split('원')[0]),
                         redirectURL,
                     });

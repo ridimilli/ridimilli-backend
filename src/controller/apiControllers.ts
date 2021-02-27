@@ -2,6 +2,7 @@ import naverBookAPI from '../modules/naverBookApi';
 import scrapper from '../modules/scrapper';
 import ut from '../modules/util';
 import rm from '../modules/responseMessage';
+import fakeResponse from '../modules/fakeResponse';
 import { Request, Response } from 'express';
 import * as _ from 'lodash';
 
@@ -72,17 +73,9 @@ const crawling = async (req: Request, res: Response): Promise<Response> => {
     }
 };
 
-const kyobo = async (req: Request, res: Response): Promise<Response> => {
-    const { title }: { title?: string } = req.query;
-
-    try {
-        const book = await scrapper.kyoboBook(title);
-        return res
-            .status(200)
-            .json(ut.success(rm.GET_CRAWLING_BOOKS_SUCCESS, book));
-    } catch (err) {
-        return res.status(500).json(ut.fail(rm.GET_CRAWLING_BOOKS_FAILED));
-    }
+const test = (req: Request, res: Response): any => {
+    const data = fakeResponse;
+    res.status(200).json(data);
 };
 
-export { naverAPI, crawling, kyobo };
+export { naverAPI, crawling, test };

@@ -21,7 +21,6 @@ const pupRequest = async (
         const browse = await puppeteer.launch();
         const page = await browse.newPage();
         await page.goto(url, { waitUntil: 'networkidle0' });
-        //await page.waitForSelector(childSelectorArr[LOAD_SELECTOR], {});
         const content = await page.content();
         const $ = cheerio.load(content);
         const lists = [];
@@ -67,7 +66,6 @@ const kyoboPupRequest = async (
     await page.goto(url, {
         waitUntil: 'networkidle0',
     }); //여기서 모든 latency가 발견됨.
-    //await page.waitForSelector(childSelectorArr[LOAD_SELECTOR], {});
     const content = await page.content();
     const $ = cheerio.load(content);
     const lists = [];
