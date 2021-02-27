@@ -21,7 +21,6 @@ export default class BookPrice {
         price: Number
     ) {
         this.title = title;
-
         this.platform = platform;
         this.redirectURL = redirectURL;
         this.serviceType = serviceType;

@@ -2,6 +2,7 @@ import naverBookAPI from '../modules/naverBookApi';
 import scrapper from '../modules/scrapper';
 import ut from '../modules/util';
 import rm from '../modules/responseMessage';
+import fakeResponse from '../modules/fakeResponse';
 import { Request, Response } from 'express';
 import * as _ from 'lodash';
 
@@ -72,4 +73,9 @@ const crawling = async (req: Request, res: Response): Promise<Response> => {
     }
 };
 
-export { naverAPI, crawling };
+const test = (req: Request, res: Response): any => {
+    const data = fakeResponse;
+    res.status(200).json(data);
+};
+
+export { naverAPI, crawling, test };
