@@ -72,17 +72,4 @@ const crawling = async (req: Request, res: Response): Promise<Response> => {
     }
 };
 
-const kyobo = async (req: Request, res: Response): Promise<Response> => {
-    const { title }: { title?: string } = req.query;
-
-    try {
-        const book = await scrapper.kyoboBook(title);
-        return res
-            .status(200)
-            .json(ut.success(rm.GET_CRAWLING_BOOKS_SUCCESS, book));
-    } catch (err) {
-        return res.status(500).json(ut.fail(rm.GET_CRAWLING_BOOKS_FAILED));
-    }
-};
-
-export { naverAPI, crawling, kyobo };
+export { naverAPI, crawling };
