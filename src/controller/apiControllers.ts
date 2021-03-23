@@ -1,12 +1,10 @@
 import naverBookAPI from '../modules/naverBookApi';
-import scrapper from '../modules/scrapper';
 import ut from '../modules/util';
 import rm from '../modules/responseMessage';
 import fakeResponse from '../modules/fakeResponse';
-import { Request, Response } from 'express';
-import * as _ from 'lodash';
+import { crawler } from '../modules/requestCrawler';
 
-import crawler from '../class/Crawler';
+import { Request, Response } from 'express';
 
 const naverAPI = async (req: Request, res: Response): Promise<Response> => {
     const { start, query }: { start?: number; query?: string } = req.query;
@@ -45,10 +43,6 @@ const naverAPI = async (req: Request, res: Response): Promise<Response> => {
     }
 };
 
-/**
- * @body = title, link
- * @return  json array
- */
 const crawling = async (req: Request, res: Response): Promise<Response> => {
     const { title, bid }: { title?: string; bid?: string } = req.query;
 
@@ -57,17 +51,8 @@ const crawling = async (req: Request, res: Response): Promise<Response> => {
     }
 
     try {
-        const purchaseBooks = await scrapper.searchNaverBook(bid);
-        const dto = await crawler.crawling(title);
-        const subscribedBooks = dto
-            .filter((item) => item !== undefined)
-            .filter((item) => item !== null);
-        res.status(200).json(
-            ut.success(rm.GET_CRAWLING_BOOKS_SUCCESS, {
-                subscribedBooks,
-                purchaseBooks,
-            })
-        );
+        const result = await crawler(title, bid);
+        res.status(200).json(ut.success(rm.GET_CRAWLING_BOOKS_SUCCESS, result));
     } catch (err) {
         res.status(500).json(ut.fail(rm.GET_CRAWLING_BOOKS_FAILED));
     }
